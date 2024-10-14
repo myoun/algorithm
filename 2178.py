@@ -1,46 +1,34 @@
 from collections import deque
 
-n, m = map(int, input().split())
-
-graph = [[0] * (n+2)]
-
-for i in range(n):
-    graph.append(list(map(int, input())))
-
-graph.append([0] * (n+2))
-
-
-
-visited = [[False for i in range(m+2)] for i in range(n+2)]
+n,m = map(int, input().split())
+maze = [[*map(int, input())] for _ in range(n)]
 
 queue = deque()
 
-queue.append((1,1))
+queue.append((0,0,1))
 
-move = 0
+visited = set()
 
+min_t = float('inf')
 
 while queue:
-    u = queue.popleft()
-    if u == (n, m):
-        print(move)
-        break
+    x, y, t = queue.popleft()
 
-    move += 1
-
-    # visited[u[0]][u[1]] = True
-
-    if u[0] == 0 or u[1] == 0 or u[0] == n or u[1] == m:    
+    if (x,y) in visited:
         continue
 
-    print(u)
+    visited.add((x,y))
+    if (x,y) == (n-1,m-1):
+        min_t = t
+        break
 
-    if graph[u[0]][u[1]+1] != 0:
-        queue.append((u[0], u[1]+1))
-    if graph[u[0]][u[1]-1] != 0:
-        queue.append((u[0], u[1]-1))
-    if graph[u[0]+1][u[1]] != 0:
-        queue.append((u[0]+1, u[1]))
-    if graph[u[0]-1][u[1]] != 0:
-        queue.append((u[0]-1, u[1]))
-    
+    if x > 0 and maze[x-1][y]:
+        queue.append((x-1, y, t+1))
+    if y > 0 and maze[x][y-1]:
+        queue.append((x, y-1, t+1))
+    if x+1 < n and maze[x+1][y]:
+        queue.append((x+1, y, t+1))
+    if y+1 < m and maze[x][y+1]:
+        queue.append((x, y+1, t+1))
+
+print(min_t)
