@@ -61,4 +61,17 @@ def apply_priority(ast):
     
     return new_ast
 
+def to_postfix(ast):
+    result = []
+    for element in ast:
+        if isinstance(element, list):
+            result.append(to_postfix(element))
+        elif isinstance(element, Term):
+            result.append(element.value)
+        elif isinstance(element, Operator):
+            result.append(element.value)
+    return ' '.join(result)
+
 parsed = apply_priority(parsed)
+postfix_expression = to_postfix(parsed)
+print(postfix_expression)
