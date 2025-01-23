@@ -25,7 +25,11 @@ for i, c in enumerate(expression):
             parsed[-1].append(last)
         bracket -= 1
 
-    elif c == '*' or c == '/' or c == '+' or c == '-':
+    elif c == '*' or c == '/':
+        if bracket == 0 or not isinstance(parsed[-1], list):
+            parsed.append([])
+        parsed[-1].append(Operator(c))
+    elif c == '+' or c == '-':
         if bracket:
             parsed[-1].append(Operator(c))
         else:
