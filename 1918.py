@@ -69,7 +69,8 @@ def to_postfix(ast):
         elif isinstance(element, Term):
             result.append(element.value)
         elif isinstance(element, Operator):
-            result.append(element.value)
+            # Move operator to the end for postfix notation
+            result.insert(-1, element.value)
     return ' '.join(result)
 
 parsed = apply_priority(parsed)
