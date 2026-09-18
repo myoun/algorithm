@@ -18,7 +18,7 @@ for card in cards:
         deck[3].append(card)
 
 for i in range(4):
-    deck[i].sort(reverse=True)
+    deck[i].sort()
 
 for i in range(k):
     large = numbers
@@ -26,7 +26,7 @@ for i in range(k):
     for i in range(4):
         if len(deck[i]) == 0:
             continue
-        v = deck[i][0]
+        v = deck[i][-1]
         temp = numbers.copy()
         if v[0] == 'A':
             temp[0] += v[1]
@@ -42,5 +42,6 @@ for i in range(k):
     print(card[0], card[1])
     a = card[0]
     n = 'ABCD'.index(a)
-    deck[n].pop(0)
+
+    deck[n].pop()
     numbers = large
