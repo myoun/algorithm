@@ -3,26 +3,28 @@ from heapq import heappop, heappush
 n, k = map(int, input().split())
 
 customers = [tuple(map(int, input().split())) for i in range(n)]
-heap = []
+# i(고객 번호), w(물건의 수)
 
-ci = [0] * k
+heap1 = [] # (비는 시간, 계산대 번호)
+heap2 = [] # (물건의 수 = 종료 시간, -계산대 번호, 고객 번호)
 
 a = 1
 
 for (i, w) in customers:
     if a <= k:
-        heappush(heap, (w, -a, i))
-        ci[a-1] = w
+        heappush(heap2, (w, -a, i))
+        heappush(heap1, (w, a))
     else:
-        m = min(enumerate(ci), key=lambda x: x[1])
-        heappush(heap, (m[1]+w, -(m[0]+1), i))
-        ci[m[0]] = m[1]+w
+        m_w, m_a = heappop(heap1)
+        heappush(heap2, (m_w+w, -m_a, i))
+        heappush(heap1, (m_w+w, m_a))
     a += 1
 
 r = 0
 rn = 1
 
-for i in range(len(heap)):
-    r += rn * heappop(heap)[2]
+for i in range(len(heap2)):
+    r += rn * heappop(heap2)[2]
     rn += 1
+
 print(r)
